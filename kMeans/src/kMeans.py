@@ -51,17 +51,24 @@ def main(length,numSets,accuracy,flag):
         quantizedSets = setStuff.setsFromMeans(means,points,numSets)
         newmeans = setStuff.meansFromSets(quantizedSets,low,high,length)
         print means 
-        if length == 2:
-            pointsX, pointsY = zip(*points)
-            meansX, meansY = zip(*means)
-            newmeansX, newmeansY = zip(*newmeans)
-        plt.plot(pointsX,pointsY,'ro',meansX,meansY,'b+',newmeansX,newmeansY,'k+')
-        plt.show(block=False)
-        # The 2 here means the plot will stay for 2 seconds.
-        # Change this if you would like the plot to stay 
-        # longer
-        plt.pause(2)
-        plt.close()
+        if length == 1 or length == 2 or length == 3:
+            if length == 2:
+                pointsX, pointsY = zip(*points)
+                meansX, meansY = zip(*means)
+                newmeansX, newmeansY = zip(*newmeans)
+            if length < 3:
+                plt.plot(pointsX,pointsY,'ro',meansX,meansY,'b+',newmeansX,newmeansY,'k+')
+                plt.show(block=False)
+                # The 2 here means the plot will stay for 2 seconds.
+                # Change this if you would like the plot to stay 
+                # longer
+                plt.pause(2)
+                plt.close()
+            if length == 3:
+                pointsX, pointsY, pointsZ = zip(*points)
+                meansX, meansY, meansZ = zip(*means)
+                newmeansX, newmeansY, newmeansZ = zip(*newmeans)
+                Axes3D.scatter(pointsX,pointsY,pointsZ,'ro',meansX,meansY,meansZ,'b+',newmeansX,newmeansY,newmeansZ,'k+')
         count = count + 1
         error = helpers.error(means,newmeans)
         means = newmeans
@@ -82,6 +89,7 @@ def main(length,numSets,accuracy,flag):
 ##############################################################
 if __name__ == "__main__":
     import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio
+    from mpl_toolkits.mplot3d import Axes3D
     args = sys.argv[1:]
     length = 2#int(args[3])
     numSets = int(args[0])
