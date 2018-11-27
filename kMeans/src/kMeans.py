@@ -13,21 +13,31 @@
 def main(length,numSets,accuracy,flag):
     
     if flag:
-        n = int(sys.argv[3])
-        low = int(sys.argv[4])
-        high = int(sys.argv[5])
+        n = int(sys.argv[4])
+        low = int(sys.argv[5])
+        high = int(sys.argv[6])
         points = []
         theRange = high - low
         spacing = float(theRange)/numSets
         means = []
         i = low+spacing/2
         while i < high:
-            means.append((i,i))
+            j = 0
+            thePoint = ()
+            while j < length:
+                thePoint = thePoint + (i,)
+                j = j + 1
+            means.append(thePoint)
             i = i + spacing
         for i in range(n):
-            points.append((rand.uniform(low,high),rand.uniform(low,high)))
+            thePoint = ()
+            j = 0
+            while j < length:
+                thePoint = thePoint + (rand.uniform(low,high),)
+                j = j + 1
+            points.append(thePoint)
     else:
-        filepath = "../Testing/test"+sys.argv[3]+".csv"
+        filepath = "../Testing/test"+sys.argv[4]+".csv"
         points = fileio.readFile(filepath)
         low = helpers.theMin(points)
         high = helpers.theMax(points)
@@ -65,10 +75,22 @@ def main(length,numSets,accuracy,flag):
                 plt.pause(2)
                 plt.close()
             if length == 3:
-                pointsX, pointsY, pointsZ = zip(*points)
-                meansX, meansY, meansZ = zip(*means)
-                newmeansX, newmeansY, newmeansZ = zip(*newmeans)
-                Axes3D.scatter(pointsX,pointsY,pointsZ,'ro',meansX,meansY,meansZ,'b+',newmeansX,newmeansY,newmeansZ,'k+')
+                pointsX = [x[0] for x in points] 
+                pointsY = [y[1] for y in points] 
+                pointsZ = [z[2] for z in points]
+                meansX = [x[0] for x in means]
+                meansY = [y[1] for y in means]
+                meansZ = [z[2] for z in means]
+                newmeansX = [x[0] for x in newmeans]
+                newmeansY = [y[1] for y in newmeans]
+                newmeansZ = [z[2] for z in newmeans]
+                print pointsX
+                fig = plt.figure()
+                ax = fig.gca(projection = '3d')
+                ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
+                ax.scatter(meansX,meansY,meansZ,'b+')
+                ax.scatter(newmeansX,newmeansY,newmeansZ,'k+')
+                plt.show()
         count = count + 1
         error = helpers.error(means,newmeans)
         means = newmeans
@@ -91,7 +113,7 @@ if __name__ == "__main__":
     import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio
     from mpl_toolkits.mplot3d import Axes3D
     args = sys.argv[1:]
-    length = 2#int(args[3])
+    length = 3#int(args[3])
     numSets = int(args[0])
     accuracy = float(args[1])
     flag = int(args[2])
