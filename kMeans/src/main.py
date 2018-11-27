@@ -10,7 +10,12 @@ def main(accuracy, testnum,eaccuracy,length=3,flag=0):
         error = newerror
         newerror = helpers.partitionError(means,partition)
         print "Error is: ", error, "New error is: ", newerror
-    return numSets
+    if newerror < error and newerror < error2:
+        return numSets
+    elif error < error2:
+        return numSets - 1
+    else:
+        return numSets - 2
 
 if __name__ == "__main__":
     import sys, kMeans, helpers

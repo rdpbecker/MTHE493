@@ -23,15 +23,16 @@ def main(length,numSets,accuracy,flag,testnum):
         theRange = high - low
         spacing = float(theRange)/numSets
         means = []
-        i = low+spacing/2
-        while i < high:
-            j = 0
-            thePoint = ()
-            while j < length:
-                thePoint = thePoint + (i,)
-                j = j + 1
-            means.append(thePoint)
-            i = i + spacing
+        thePoint = ()
+        midpoint = ()
+        for j in range(length-1):
+            thePoint = thePoint + (0,)
+            midpoint = midpoint + (1/(numSets-1)**0.5,)
+        thePoint = thePoint + (1,)
+        midpoint = midpoint + (0,)
+        increment = helpers.add(thePoint,helpers.mult(-1,midpoint))
+        for i in range(numSets):
+            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
         for i in range(n):
             thePoint = ()
             j = 0
@@ -42,17 +43,29 @@ def main(length,numSets,accuracy,flag,testnum):
     else:
         filepath = "../Testing/test"+testnum+".csv"
         points = fileio.readFile(filepath)
-        low = helpers.theMin(points)
-        high = helpers.theMax(points)
-        spacing = ()
-        for i in range(length):
-            spacing = spacing + ((high[i]-low[i])/numSets,)
+#       low = helpers.theMin(points)
+#       high = helpers.theMax(points)
+#       spacing = ()
+#       for i in range(length):
+#           spacing = spacing + ((high[i]-low[i])/numSets,)
         means = []
         n = len(points)
+        thePoint = ()
+        midpoint = ()
+        for j in range(length-1):
+            thePoint = thePoint + (0,)
+            midpoint = midpoint + (1/float(length-1),)
+        thePoint = thePoint + (1,)
+        midpoint = midpoint + (0,)
+        increment = helpers.add(midpoint,helpers.mult(-1,thePoint))
+#       print thePoint, midpoint, increment
+        thePoint = helpers.add(thePoint,helpers.mult(0.25,increment))
+        increment = helpers.mult(0.5,increment)
+#       print thePoint, increment
         for i in range(numSets):
-            means.append(helpers.add(low,helpers.mult(i,spacing)))
+            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
 
-#    print means
+#   print means
     # Initialize the counter and plotting variables
     count = 0
     meansY = [1 for i in range(numSets)]
@@ -98,8 +111,8 @@ def main(length,numSets,accuracy,flag,testnum):
                 ax.scatter(newmeansX,newmeansY,newmeansZ,c='b',marker='o')
                 ax.invert_yaxis()
                 plt.show()#block = False)
-#                plt.pause(2)
-#                plt.close()
+#               plt.pause(2)
+#               plt.close()
         count = count + 1
         error = helpers.error(means,newmeans)
         means = newmeans
