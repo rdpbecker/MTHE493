@@ -1,3 +1,6 @@
+import fileio, setStuff, helpers,matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 ##############################################################
 ## Does the Lloyd-Max algorithm on a 1-D set (that is 
 ## constructed here)
@@ -10,7 +13,7 @@
 ## Returns: nothing. The results are printed using matplotlib
 ##############################################################
 
-def main(length,numSets,accuracy,flag):
+def main(length,numSets,accuracy,flag,testnum):
     
     if flag:
         n = int(sys.argv[4])
@@ -37,7 +40,7 @@ def main(length,numSets,accuracy,flag):
                 j = j + 1
             points.append(thePoint)
     else:
-        filepath = "../Testing/test"+sys.argv[4]+".csv"
+        filepath = "../Testing/test"+testnum+".csv"
         points = fileio.readFile(filepath)
         low = helpers.theMin(points)
         high = helpers.theMax(points)
@@ -49,7 +52,7 @@ def main(length,numSets,accuracy,flag):
         for i in range(numSets):
             means.append(helpers.add(low,helpers.mult(i,spacing)))
 
-    print means
+#    print means
     # Initialize the counter and plotting variables
     count = 0
     meansY = [1 for i in range(numSets)]
@@ -63,7 +66,7 @@ def main(length,numSets,accuracy,flag):
     while error > accuracy:
         quantizedSets = setStuff.setsFromMeans(means,points,numSets)
         newmeans = setStuff.meansFromSets(quantizedSets,length,means)
-        print means 
+#        print means 
         if length == 1 or length == 2 or length == 3:
             if length == 2:
                 pointsX, pointsY = zip(*points)
@@ -87,17 +90,20 @@ def main(length,numSets,accuracy,flag):
                 newmeansX = [x[0] for x in newmeans]
                 newmeansY = [y[1] for y in newmeans]
                 newmeansZ = [z[2] for z in newmeans]
-                print pointsX
+#                print pointsX
                 fig = plt.figure()
                 ax = fig.gca(projection = '3d')
                 ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
                 ax.scatter(meansX,meansY,meansZ,c='r',marker='o')
                 ax.scatter(newmeansX,newmeansY,newmeansZ,c='b',marker='o')
                 ax.invert_yaxis()
-                plt.show()
+                plt.show()#block = False)
+#                plt.pause(2)
+#                plt.close()
         count = count + 1
         error = helpers.error(means,newmeans)
         means = newmeans
+    return means, quantizedSets
 
 ##############################################################
 ## Command line things. When you run the thing from the 
@@ -121,4 +127,5 @@ if __name__ == "__main__":
     numSets = int(args[0])
     accuracy = float(args[1])
     flag = int(args[2])
-    main(length,numSets,accuracy,flag)
+    testnum = args[3]
+    main(length,numSets,accuracy,flag,testnum)

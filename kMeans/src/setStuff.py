@@ -32,7 +32,7 @@ def setsFromMeans(means,points,n):
 
 def meansFromSets(sets,length,means):
     newmeans = []
-    print sets, means
+#    print sets, means
     for i in range(len(sets)):
         newmeans.append(helpers.mean(sets[i],length,means[i]))
     return newmeans

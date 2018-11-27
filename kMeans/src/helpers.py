@@ -73,9 +73,9 @@ def distance(point1, point2):
 ##############################################################
 
 def mean(aList,length,mean):
-    print aList
+#    print aList
     n = len(aList)
-    print n, length
+#    print n, length
     if not n:
         return mean 
     averagePoint = ()
@@ -119,7 +119,14 @@ def closest(means,point,n):
 
 def error(means, newmeans):
     distSum = 0
-    print means
+#    print means
     for i in range(len(means)):
         distSum = distSum + distance(means[i],newmeans[i])
     return distSum
+
+def partitionError(means,partition):
+    error = 0
+    for i in range(len(partition)):
+        for point in partition[i]:
+            error = error + distance(point,means[i])
+    return error
