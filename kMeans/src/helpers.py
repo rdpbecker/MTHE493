@@ -72,12 +72,12 @@ def distance(point1, point2):
 ##          range if the list is empty
 ##############################################################
 
-def mean(aList,low,high,length):
+def mean(aList,length,mean):
     print aList
     n = len(aList)
     print n, length
     if not n:
-        return ((low+high)/2,(low+high)/2)
+        return mean 
     averagePoint = ()
     for i in range(length):
         theSum = 0

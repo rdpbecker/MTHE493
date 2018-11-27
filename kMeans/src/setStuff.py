@@ -30,8 +30,9 @@ def setsFromMeans(means,points,n):
 ## Returns: a list of the averages of the sets
 ##############################################################
 
-def meansFromSets(sets,low,high,length):
-    means = []
-    for aSet in sets:
-        means.append(helpers.mean(aSet,low,high,length))
-    return means
+def meansFromSets(sets,length,means):
+    newmeans = []
+    print sets, means
+    for i in range(len(sets)):
+        newmeans.append(helpers.mean(sets[i],length,means[i]))
+    return newmeans

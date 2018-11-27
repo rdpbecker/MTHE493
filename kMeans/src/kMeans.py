@@ -41,12 +41,15 @@ def main(length,numSets,accuracy,flag):
         points = fileio.readFile(filepath)
         low = helpers.theMin(points)
         high = helpers.theMax(points)
-        spacing = (high[0]-low[0]/numSets,high[1]-low[1]/numSets)
+        spacing = ()
+        for i in range(length):
+            spacing = spacing + ((high[i]-low[i])/numSets,)
         means = []
         n = len(points)
         for i in range(numSets):
             means.append(helpers.add(low,helpers.mult(i,spacing)))
 
+    print means
     # Initialize the counter and plotting variables
     count = 0
     meansY = [1 for i in range(numSets)]
@@ -59,7 +62,7 @@ def main(length,numSets,accuracy,flag):
     # plotting the results each time
     while error > accuracy:
         quantizedSets = setStuff.setsFromMeans(means,points,numSets)
-        newmeans = setStuff.meansFromSets(quantizedSets,low,high,length)
+        newmeans = setStuff.meansFromSets(quantizedSets,length,means)
         print means 
         if length == 1 or length == 2 or length == 3:
             if length == 2:
@@ -88,8 +91,9 @@ def main(length,numSets,accuracy,flag):
                 fig = plt.figure()
                 ax = fig.gca(projection = '3d')
                 ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
-                ax.scatter(meansX,meansY,meansZ,'b+')
-                ax.scatter(newmeansX,newmeansY,newmeansZ,'k+')
+                ax.scatter(meansX,meansY,meansZ,c='r',marker='o')
+                ax.scatter(newmeansX,newmeansY,newmeansZ,c='b',marker='o')
+                ax.invert_yaxis()
                 plt.show()
         count = count + 1
         error = helpers.error(means,newmeans)
