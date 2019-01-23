@@ -16,9 +16,9 @@ from mpl_toolkits.mplot3d import Axes3D
 def main(length,numSets,accuracy,flag,testnum):
     
     if flag:
-        n = int(sys.argv[4])
-        low = int(sys.argv[5])
-        high = int(sys.argv[6])
+        n = int(sys.argv[5])
+        low = int(sys.argv[6])
+        high = int(sys.argv[7])
         points = []
         theRange = high - low
         spacing = float(theRange)/numSets

@@ -73,9 +73,9 @@ def distance(point1, point2):
 ##############################################################
 
 def mean(aList,length,mean):
-#    print aList
+#   print aList
     n = len(aList)
-#    print n, length
+#   print n, length
     if not n:
         return mean 
     averagePoint = ()
