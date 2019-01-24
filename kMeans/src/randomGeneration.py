@@ -30,5 +30,3 @@ def generatePerson(num):
         return group4()
     elif group == 5:
         return group5()
-
-print generatePerson(5)
