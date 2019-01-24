@@ -1,71 +1,9 @@
 import fileio, setStuff, helpers,matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-##############################################################
-## Does the Lloyd-Max algorithm on a 1-D set (that is 
-## constructed here)
-##
-## Parameters: low - the lowest possible value in the range
-##             high - the highest possible value in the range
-##             n - the number of points in the set
-##             numSets - the number of desired kMeans
-##
-## Returns: nothing. The results are printed using matplotlib
-##############################################################
-
-def main(length,numSets,accuracy,flag,testnum):
-    
-    if flag:
-        n = int(sys.argv[5])
-        low = int(sys.argv[6])
-        high = int(sys.argv[7])
-        points = []
-        theRange = high - low
-        spacing = float(theRange)/numSets
-        means = []
-        thePoint = ()
-        midpoint = ()
-        for j in range(length-1):
-            thePoint = thePoint + (0,)
-            midpoint = midpoint + (1/(numSets-1)**0.5,)
-        thePoint = thePoint + (1,)
-        midpoint = midpoint + (0,)
-        increment = helpers.add(thePoint,helpers.mult(-1,midpoint))
-        for i in range(numSets):
-            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
-        for i in range(n):
-            thePoint = ()
-            j = 0
-            while j < length:
-                thePoint = thePoint + (rand.uniform(low,high),)
-                j = j + 1
-            points.append(thePoint)
-    else:
-        filepath = "../Testing/test"+testnum+".csv"
-        points = fileio.readFile(filepath)
-#       low = helpers.theMin(points)
-#       high = helpers.theMax(points)
-#       spacing = ()
-#       for i in range(length):
-#           spacing = spacing + ((high[i]-low[i])/numSets,)
-        means = []
-        n = len(points)
-        thePoint = ()
-        midpoint = ()
-        for j in range(length-1):
-            thePoint = thePoint + (0,)
-            midpoint = midpoint + (1/float(length-1),)
-        thePoint = thePoint + (1,)
-        midpoint = midpoint + (0,)
-        increment = helpers.add(midpoint,helpers.mult(-1,thePoint))
-#       print thePoint, midpoint, increment
-        thePoint = helpers.add(thePoint,helpers.mult(0.25,increment))
-        increment = helpers.mult(0.5,increment)
-#       print thePoint, increment
-        for i in range(numSets):
-            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
-
-#   print means
+def doKMeans(points,means):
+    n = len(points)
+    numSets = len(means)
     # Initialize the counter and plotting variables
     count = 0
     meansY = [1 for i in range(numSets)]
@@ -119,6 +57,81 @@ def main(length,numSets,accuracy,flag,testnum):
     return means, quantizedSets
 
 ##############################################################
+## Does the Lloyd-Max algorithm on a 1-D set (that is 
+## constructed here)
+##
+## Parameters: low - the lowest possible value in the range
+##             high - the highest possible value in the range
+##             n - the number of points in the set
+##             numSets - the number of desired kMeans
+##
+## Returns: nothing. The results are printed using matplotlib
+##############################################################
+
+def main(length,numSets,accuracy,flag,testnum):
+    
+    if flag == 2:
+        n = int(sys.argv[5])
+        points = []
+        means = [gen.group1(),gen.group2(),gen.group3(),gen.group4(),gen.group5()]
+        for i in range(n):
+            points.append(gen.generatePerson(5))
+        print points
+        print means
+    elif flag == 1:
+        n = int(sys.argv[5])
+        low = int(sys.argv[6])
+        high = int(sys.argv[7])
+        points = []
+        theRange = high - low
+        spacing = float(theRange)/numSets
+        means = []
+        thePoint = ()
+        midpoint = ()
+        for j in range(length-1):
+            thePoint = thePoint + (0,)
+            midpoint = midpoint + (1/(numSets-1)**0.5,)
+        thePoint = thePoint + (1,)
+        midpoint = midpoint + (0,)
+        increment = helpers.add(thePoint,helpers.mult(-1,midpoint))
+        for i in range(numSets):
+            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
+        for i in range(n):
+            thePoint = ()
+            j = 0
+            while j < length:
+                thePoint = thePoint + (rand.uniform(low,high),)
+                j = j + 1
+            points.append(thePoint)
+    else:
+        filepath = "../Testing/test"+testnum+".csv"
+        points = fileio.readFile(filepath)
+#       low = helpers.theMin(points)
+#       high = helpers.theMax(points)
+#       spacing = ()
+#       for i in range(length):
+#           spacing = spacing + ((high[i]-low[i])/numSets,)
+        means = []
+        n = len(points)
+        thePoint = ()
+        midpoint = ()
+        for j in range(length-1):
+            thePoint = thePoint + (0,)
+            midpoint = midpoint + (1/float(length-1),)
+        thePoint = thePoint + (1,)
+        midpoint = midpoint + (0,)
+        increment = helpers.add(midpoint,helpers.mult(-1,thePoint))
+#       print thePoint, midpoint, increment
+        thePoint = helpers.add(thePoint,helpers.mult(0.25,increment))
+        increment = helpers.mult(0.5,increment)
+#       print thePoint, increment
+        for i in range(numSets):
+            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
+
+#   print means
+    doKMeans(points,means)
+
+##############################################################
 ## Command line things. When you run the thing from the 
 ## command line, it goes here. This is where we import 
 ## stuff (make sure you have matplotlib installed properly.
@@ -133,7 +146,7 @@ def main(length,numSets,accuracy,flag,testnum):
 ##            numSets (int) - the number of kMeans
 ##############################################################
 if __name__ == "__main__":
-    import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio
+    import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio, randomGeneration as gen
     from mpl_toolkits.mplot3d import Axes3D
     args = sys.argv[1:]
     length = 3#int(args[3])
