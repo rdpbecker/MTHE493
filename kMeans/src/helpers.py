@@ -46,6 +46,16 @@ def mult(num,point):
     return new
 
 ##############################################################
+##
+##############################################################
+
+def mod(modulus,point):
+    new = ()
+    for i in range(len(point)):
+        new = new + (point[i]%modulus,)
+    return new
+
+##############################################################
 ## Finds the Euclidean norm between two points
 ##
 ## Parameters: point1 - the first point

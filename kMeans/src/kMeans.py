@@ -38,29 +38,47 @@ def doKMeans(points,means):
                 plt.pause(2)
                 plt.close()
             if length == 3:
-                pointsX = [x[0] for x in points] 
-                pointsY = [y[1] for y in points] 
-                pointsZ = [z[2] for z in points]
-                meansX = [x[0] for x in means]
-                meansY = [y[1] for y in means]
-                meansZ = [z[2] for z in means]
-                newmeansX = [x[0] for x in newmeans]
-                newmeansY = [y[1] for y in newmeans]
-                newmeansZ = [z[2] for z in newmeans]
+#               pointsX = [x[0] for x in points] 
+#               pointsY = [y[1] for y in points] 
+#               pointsZ = [z[2] for z in points]
+#               meansX = [x[0] for x in means]
+#               meansY = [y[1] for y in means]
+#               meansZ = [z[2] for z in means]
+#               newmeansX = [x[0] for x in newmeans]
+#               newmeansY = [y[1] for y in newmeans]
+#               newmeansZ = [z[2] for z in newmeans]
 #                print pointsX
-                fig = plt.figure()
-                ax = fig.gca(projection = '3d')
-                ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
-                ax.scatter(meansX,meansY,meansZ,c='r',marker='o')
-                ax.scatter(newmeansX,newmeansY,newmeansZ,c='m',marker='o')
-                ax.invert_yaxis()
-                plt.show()#block = False)
+#               fig = plt.figure()
+#               ax = fig.gca(projection = '3d')
+#               ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
+#               ax.scatter(meansX,meansY,meansZ,c='r',marker='o')
+#               ax.scatter(newmeansX,newmeansY,newmeansZ,c='m',marker='o')
+#               ax.invert_yaxis()
+#               plt.show()#block = False)
 #               plt.pause(2)
 #               plt.close()
+                plotSets(quantizedSets)
         count = count + 1
         error = helpers.error(means,newmeans)
         means = newmeans
     return means, quantizedSets
+
+def plotSets(quantizedSets):
+    count = 1
+    base = (0.31,0.27,0.43)
+    colour = (0.0,0.0,0.0)
+    fig = plt.figure()
+    ax = fig.gca(projection = '3d')
+    for cluster in quantizedSets:
+        colour = helpers.add(colour,base)
+        colour = helpers.mod(1,colour)
+        pointsX = [x[0] for x in cluster]
+        pointsY = [y[1] for y in cluster]
+        pointsZ = [z[2] for z in cluster]
+        ax.scatter(pointsX,pointsY,pointsZ,c=colour,marker='+')
+        count = count + 1
+    ax.invert_yaxis()
+    plt.show()
 
 def extendList(points,n):
     for i in range(n):
