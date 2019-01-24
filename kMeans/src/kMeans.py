@@ -1,6 +1,12 @@
 import fileio, setStuff, helpers,matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+def sanitizeInput(header):
+    print header
+    line = sys.stdin.readline()
+    print ""
+    return line[:-1]
+
 def doKMeans(points,means):
     n = len(points)
     numSets = len(means)
@@ -46,7 +52,7 @@ def doKMeans(points,means):
                 ax = fig.gca(projection = '3d')
                 ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
                 ax.scatter(meansX,meansY,meansZ,c='r',marker='o')
-                ax.scatter(newmeansX,newmeansY,newmeansZ,c='b',marker='o')
+                ax.scatter(newmeansX,newmeansY,newmeansZ,c='m',marker='o')
                 ax.invert_yaxis()
                 plt.show()#block = False)
 #               plt.pause(2)
@@ -55,6 +61,19 @@ def doKMeans(points,means):
         error = helpers.error(means,newmeans)
         means = newmeans
     return means, quantizedSets
+
+def extendList(points,n):
+    for i in range(n):
+        points.append(gen.generatePerson(5))
+
+def increaseN(n):
+    points = []
+    means = [gen.group1(),gen.group2(),gen.group3(),gen.group4(),gen.group5()]
+    count = int(sanitizeInput("Input the number of iterations here:"))
+    for i in range(count):
+        print "Iteration: ", i+1
+        extendList(points,n)
+        means, sets = doKMeans(points,means)    
 
 ##############################################################
 ## Does the Lloyd-Max algorithm on a 1-D set (that is 
@@ -68,20 +87,15 @@ def doKMeans(points,means):
 ## Returns: nothing. The results are printed using matplotlib
 ##############################################################
 
-def main(length,numSets,accuracy,flag,testnum):
-    
+def main(numSets,accuracy,flag,length=3):
     if flag == 2:
-        n = int(sys.argv[5])
-        points = []
-        means = [gen.group1(),gen.group2(),gen.group3(),gen.group4(),gen.group5()]
-        for i in range(n):
-            points.append(gen.generatePerson(5))
-        print points
-        print means
+        n = int(sanitizeInput("Input the block size here:")) 
+        increaseN(n)
+        return
     elif flag == 1:
-        n = int(sys.argv[5])
-        low = int(sys.argv[6])
-        high = int(sys.argv[7])
+        n = int(sanitizeInput("Input the sample size here:") )
+        low = float(sanitizeInput("Input the range minimum here:"))
+        high = float(sanitizeInput("Input the range maximum here:"))
         points = []
         theRange = high - low
         spacing = float(theRange)/numSets
@@ -104,6 +118,7 @@ def main(length,numSets,accuracy,flag,testnum):
                 j = j + 1
             points.append(thePoint)
     else:
+        testnum = sanitizeInput("Input the test number here:")
         filepath = "../Testing/test"+testnum+".csv"
         points = fileio.readFile(filepath)
 #       low = helpers.theMin(points)
@@ -146,12 +161,12 @@ def main(length,numSets,accuracy,flag,testnum):
 ##            numSets (int) - the number of kMeans
 ##############################################################
 if __name__ == "__main__":
-    import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio, randomGeneration as gen
+    import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio, randomGeneration as gen, helps
     from mpl_toolkits.mplot3d import Axes3D
+    helps.helpStr()
     args = sys.argv[1:]
     length = 3#int(args[3])
-    numSets = int(args[0])
-    accuracy = float(args[1])
-    flag = int(args[2])
-    testnum = args[3]
-    main(length,numSets,accuracy,flag,testnum)
+    numSets = int(sanitizeInput("Input the desired number of clusters:"))
+    accuracy = float(sanitizeInput("Input the desired percent accuracy:"))/100
+    flag = int(sanitizeInput("Input the flag corresponding to the desired test:"))
+    main(numSets,accuracy,flag,length)
