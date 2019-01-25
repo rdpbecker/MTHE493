@@ -20,6 +20,14 @@ def setsFromMeans(means,points,n):
         sets[helpers.closest(means,point,n)].append(point)
     return sets
 
+def setsFromMeans3(means,points,n):
+    sets = []
+    for i in range(n):
+        sets.append({})
+    for point in points.keys():
+        sets[helpers.closest(means,point,n)][point] = points[point]
+    return sets
+
 ##############################################################
 ## Given a set of sets, finds the mean of each set
 ##
@@ -35,4 +43,10 @@ def meansFromSets(sets,length,means):
 #    print sets, means
     for i in range(len(sets)):
         newmeans.append(helpers.mean(sets[i],length,means[i]))
+    return newmeans
+
+def meansFromSets3(sets,length,means):
+    newmeans = []
+    for i in range(len(sets)):
+        newmeans.append(helpers.mean(sets[i].keys(),length,means[i]))
     return newmeans

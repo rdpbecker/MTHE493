@@ -63,35 +63,68 @@ def doKMeans(points,means):
         means = newmeans
     return means, quantizedSets
 
+def doKMeans3(points,means):
+    n = len(points)
+    numSets = len(means)
+    # Initialize the counter and plotting variables
+    count = 0
+    
+    error = 2*accuracy
+
+    # Do the Lloyd-Max algorithm 10 times, printing and
+    # plotting the results each time
+    while error > accuracy:
+        quantizedSets = setStuff.setsFromMeans3(means,points,numSets)
+        newmeans = setStuff.meansFromSets3(quantizedSets,length,means)
+        plotSets(quantizedSets)
+        count = count + 1
+        error = helpers.error(means,newmeans)
+        means = newmeans
+    return means, quantizedSets
+
 def plotSets(quantizedSets):
     count = 1
-    base = (0.31,0.27,0.43)
+    base = (0.31,0.43,0.27)
     colour = (0.0,0.0,0.0)
     fig = plt.figure()
     ax = fig.gca(projection = '3d')
     for cluster in quantizedSets:
         colour = helpers.add(colour,base)
         colour = helpers.mod(1,colour)
-        pointsX = [x[0] for x in cluster]
-        pointsY = [y[1] for y in cluster]
-        pointsZ = [z[2] for z in cluster]
+        pointsX = [x[0] for x in cluster.keys()]
+        pointsY = [y[1] for y in cluster.keys()]
+        pointsZ = [z[2] for z in cluster.keys()]
         ax.scatter(pointsX,pointsY,pointsZ,c=colour,marker='+')
         count = count + 1
     ax.invert_yaxis()
     plt.show()
 
+def checkErrors(quantizedSets):
+    n = len(quantizedSets)
+    for i in range(n):
+        cluster = quantizedSets[i]
+        flag = 1
+        for point in cluster.keys():
+            if cluster[point] != i+1:
+                print point, "Expected: ", cluster[point], ", got: ", i+1
+                flag = 0
+        if flag:
+            print "Everything ok for cluster #", i+1
+
 def extendList(points,n):
     for i in range(n):
-        points.append(gen.generatePerson(5))
+        vect, group = gen.generatePerson(5)
+        points[vect] = group
 
 def increaseN(n):
-    points = []
+    points = {} 
     means = [gen.group1(),gen.group2(),gen.group3(),gen.group4(),gen.group5()]
     count = int(sanitizeInput("Input the number of iterations here:"))
     for i in range(count):
         print "Iteration: ", i+1
         extendList(points,n)
-        means, sets = doKMeans(points,means)    
+        means, sets = doKMeans3(points,means)    
+    checkErrors(sets)
 
 ##############################################################
 ## Does the Lloyd-Max algorithm on a 1-D set (that is 
