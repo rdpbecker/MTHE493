@@ -63,7 +63,7 @@ def doKMeans(points,means):
         means = newmeans
     return means, quantizedSets
 
-def doKMeans3(points,means):
+def doKMeans3(points,means,pausebuffer):
     n = len(points)
     numSets = len(means)
     # Initialize the counter and plotting variables
@@ -76,13 +76,13 @@ def doKMeans3(points,means):
     while error > accuracy:
         quantizedSets = setStuff.setsFromMeans3(means,points,numSets)
         newmeans = setStuff.meansFromSets3(quantizedSets,length,means)
-        plotSets(quantizedSets)
+        plotSets(quantizedSets,pausebuffer)
         count = count + 1
         error = helpers.error(means,newmeans)
         means = newmeans
     return means, quantizedSets
 
-def plotSets(quantizedSets):
+def plotSets(quantizedSets,pausebuffer):
     count = 1
     base = (0.31,0.43,0.27)
     colour = (0.0,0.0,0.0)
@@ -97,7 +97,12 @@ def plotSets(quantizedSets):
         ax.scatter(pointsX,pointsY,pointsZ,c=colour,marker='+')
         count = count + 1
     ax.invert_yaxis()
-    plt.show()
+    if pausebuffer <= 0:
+        plt.show()
+    else:
+        plt.show(block=False)
+        plt.pause(pausebuffer)
+        plt.close()
 
 def checkErrors(quantizedSets):
     n = len(quantizedSets)
@@ -116,15 +121,18 @@ def extendList(points,n):
         vect, group = gen.generatePerson(5)
         points[vect] = group
 
-def increaseN(n):
+def increaseN(n,mostRandom,numSets):
+    gen.randomInit(mostRandom)
     points = {} 
-    means = [gen.group1(),gen.group2(),gen.group3(),gen.group4(),gen.group5()]
+    means = gen.meanInit(numSets)
     count = int(sanitizeInput("Input the number of iterations here:"))
+    pausebuffer = float(sanitizeInput("Input the pause buffer here:"))
     for i in range(count):
         print "Iteration: ", i+1
         extendList(points,n)
-        means, sets = doKMeans3(points,means)    
-    checkErrors(sets)
+        means, sets = doKMeans3(points,means,pausebuffer)    
+    if not mostRandom:
+        checkErrors(sets)
 
 ##############################################################
 ## Does the Lloyd-Max algorithm on a 1-D set (that is 
@@ -141,7 +149,8 @@ def increaseN(n):
 def main(numSets,accuracy,flag,length=3):
     if flag == 2:
         n = int(sanitizeInput("Input the block size here:")) 
-        increaseN(n)
+        mostRandom = int(sanitizeInput("Print 1 for purely random, 0 for predefined clusters"))
+        increaseN(n,mostRandom,numSets)
         return
     elif flag == 1:
         n = int(sanitizeInput("Input the sample size here:") )

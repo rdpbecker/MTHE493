@@ -39,6 +39,14 @@ Arguments:
 
 #7: high - The high bound on the uniform distribution generated
            in case 1. Only required if flag=1
+
+#8: pausebuffer - The amount of time the plot should hold still 
+                  for each time it is generated. Input a negative
+                  number if you don't want the window to close
+                  automatically
+
+#9: mostRandom - 1 for a uniform distribution on the simplex
+                 0 to use predefined distributions
 """
 
 def helpStr():
