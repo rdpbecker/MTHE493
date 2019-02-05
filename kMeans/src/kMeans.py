@@ -84,7 +84,7 @@ def doKMeans3(points,means,pausebuffer):
 
 def plotSets(quantizedSets,pausebuffer):
     count = 1
-    base = (0.31,0.43,0.27)
+    base = (0.31,0.53,0.87)
     colour = (0.0,0.0,0.0)
     fig = plt.figure()
     ax = fig.gca(projection = '3d')
