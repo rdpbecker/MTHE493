@@ -13,7 +13,7 @@ def addPoint(point1,point2):
     return point
 
 def multPoint(point,mult):
-    newpoint
+    newpoint = []
     for i in range(len(point)):
         newpoint.append(mult*point[i])
     return newpoint
@@ -68,7 +68,7 @@ def main():
     for i in range(10):
         clicks = []
         normedDistList = distList(people,ad)
-        for prob in probs
+        for prob in probs:
             clicks.append(click(prob))
         clickedList = peopleFromBinary(people,clicks)
         aSum = 0
