@@ -1,9 +1,12 @@
-import random as rand, sys
+import random as rand, sys, allio
 mostRandom = 1
+ps = []
 
-def randomInit(randomness):
-    global mostRandom 
+def randomInit(randomness,clusters):
+    global mostRandom
     mostRandom = randomness
+    if not randomness:
+        choosePs(clusters)
 
 def meanInit(num):
     if mostRandom:
@@ -14,11 +17,29 @@ def meanInit(num):
         means = [group1(),group2(),group3(),group4(),group5()]
     return means
 
+def choosePs(num):
+    theSum = 0
+    global ps
+    ps = []
+    for i in range(num):
+        p = rand.uniform(0,1-theSum)
+        theSum = theSum + p
+        ps.append(theSum)
+    ps.append(1)
+    print ps
+
 def checkRandomness():
     print mostRandom
 
 def randomInteger(num):
     return int(rand.uniform(0,num)) + 1
+
+def randomSelector():
+    num = rand.uniform(0,1)
+    for i in range(len(ps)-1):
+        if num >= ps[i] and num < ps[i+1]:
+            return i+1
+    return len(ps)-1
 
 def rearrange(arr):
     newarr = [arr.pop(randomInteger(3)-1)]
@@ -28,11 +49,10 @@ def rearrange(arr):
 
 def randomFunc():
     coord1 = rand.uniform(0,1)
-    coord2 = rand.uniform(0,1-coord1)
-    coord3 = 1-coord1-coord2
-    arr = [coord1,coord2,coord3]
-    newarr = rearrange(arr)
-    return (newarr[0],newarr[1],newarr[2])
+    coord2 = rand.uniform(0,1)
+    coord3 = rand.uniform(0,1)
+    norm = coord1 + coord2 + coord3
+    return (coord1/norm,coord2/norm,coord3/norm)
 
 def group1():
     return (rand.gauss(-10,5),rand.gauss(30,4),rand.gauss(0,5))
@@ -52,7 +72,7 @@ def group5():
 def generatePerson(num):
     if mostRandom:
         return randomFunc(), 1
-    group = randomInteger(num)
+    group = randomSelector()
     if group == 1:
         return group1(), group
     elif group == 2:
