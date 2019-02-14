@@ -17,6 +17,7 @@ def doKMeans3(points,means,pausebuffer):
         plotSets(quantizedSets,newmeans,pausebuffer)
         count = count + 1
         error = design.error(means,newmeans)
+        print "Current error: ", design.partitionError(newmeans,quantizedSets)/n
         means = newmeans
     return means, quantizedSets
 
@@ -126,31 +127,6 @@ def main(numSets,accuracy,flag,length=3):
         mostRandom = int(allio.sanitizeInput("Print 1 for purely random, 0 for predefined clusters"))
         increaseN(n,mostRandom,numSets)
         return
-    elif flag == 1:
-        n = int(allio.sanitizeInput("Input the sample size here:") )
-        low = float(allio.sanitizeInput("Input the range minimum here:"))
-        high = float(allio.sanitizeInput("Input the range maximum here:"))
-        points = []
-        theRange = high - low
-        spacing = float(theRange)/numSets
-        means = []
-        thePoint = ()
-        midpoint = ()
-        for j in range(length-1):
-            thePoint = thePoint + (0,)
-            midpoint = midpoint + (1/(numSets-1)**0.5,)
-        thePoint = thePoint + (1,)
-        midpoint = midpoint + (0,)
-        increment = helpers.add(thePoint,helpers.mult(-1,midpoint))
-        for i in range(numSets):
-            means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
-        for i in range(n):
-            thePoint = ()
-            j = 0
-            while j < length:
-                thePoint = thePoint + (rand.uniform(low,high),)
-                j = j + 1
-            points.append(thePoint)
     else:
         testnum = allio.sanitizeInput("Input the test number here:")
         filepath = "../Testing/test"+testnum+".csv"
@@ -201,7 +177,7 @@ if __name__ == "__main__":
     from mpl_toolkits.mplot3d import Axes3D
     helps.helpStr()
     args = sys.argv[1:]
-    length = 3#int(args[3])
+    length = int(allio.sanitizeInput("Input the dimension of the points you'd like to generate":))
     numSets = int(allio.sanitizeInput("Input the desired number of clusters:"))
     accuracy = float(allio.sanitizeInput("Input the desired percent accuracy:"))/100
     flag = int(allio.sanitizeInput("Input the flag corresponding to the desired test:"))
