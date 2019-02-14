@@ -49,10 +49,11 @@ def rearrange(arr):
 
 def randomFunc():
     coord1 = rand.uniform(0,1)
-    coord2 = rand.uniform(0,1)
-    coord3 = rand.uniform(0,1)
-    norm = coord1 + coord2 + coord3
-    return (coord1/norm,coord2/norm,coord3/norm)
+    coord2 = rand.uniform(0,1-coord1)
+    coord3 = 1-coord1-coord2
+    arr = [coord1,coord2,coord3]
+    rand.shuffle(arr)
+    return tuple(arr)
 
 def group1():
     return (rand.gauss(-10,5),rand.gauss(30,4),rand.gauss(0,5))
