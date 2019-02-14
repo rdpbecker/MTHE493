@@ -1,67 +1,5 @@
-import fileio, setStuff, helpers,matplotlib.pyplot as plt
+import allio, setStuff, helpers,matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
-def sanitizeInput(header):
-    print header
-    line = sys.stdin.readline()
-    print ""
-    return line[:-1]
-
-def doKMeans(points,means):
-    n = len(points)
-    numSets = len(means)
-    # Initialize the counter and plotting variables
-    count = 0
-    meansY = [1 for i in range(numSets)]
-    newmeansY = [1 for i in range(numSets)]
-    pointsY = [1 for i in range(n)]
-    
-    error = 2*accuracy
-
-    # Do the Lloyd-Max algorithm 10 times, printing and
-    # plotting the results each time
-    while error > accuracy:
-        quantizedSets = setStuff.setsFromMeans(means,points,numSets)
-        newmeans = setStuff.meansFromSets(quantizedSets,length,means)
-#        print means 
-        if length == 1 or length == 2 or length == 3:
-            if length == 2:
-                pointsX, pointsY = zip(*points)
-                meansX, meansY = zip(*means)
-                newmeansX, newmeansY = zip(*newmeans)
-            if length < 3:
-                plt.plot(pointsX,pointsY,'ro',meansX,meansY,'b+',newmeansX,newmeansY,'k+')
-                plt.show(block=False)
-                # The 2 here means the plot will stay for 2 seconds.
-                # Change this if you would like the plot to stay 
-                # longer
-                plt.pause(2)
-                plt.close()
-            if length == 3:
-#               pointsX = [x[0] for x in points] 
-#               pointsY = [y[1] for y in points] 
-#               pointsZ = [z[2] for z in points]
-#               meansX = [x[0] for x in means]
-#               meansY = [y[1] for y in means]
-#               meansZ = [z[2] for z in means]
-#               newmeansX = [x[0] for x in newmeans]
-#               newmeansY = [y[1] for y in newmeans]
-#               newmeansZ = [z[2] for z in newmeans]
-#                print pointsX
-#               fig = plt.figure()
-#               ax = fig.gca(projection = '3d')
-#               ax.scatter(pointsX,pointsY,pointsZ,c=(0.1,0.2,0.5),marker='+')
-#               ax.scatter(meansX,meansY,meansZ,c='r',marker='o')
-#               ax.scatter(newmeansX,newmeansY,newmeansZ,c='m',marker='o')
-#               ax.invert_yaxis()
-#               plt.show()#block = False)
-#               plt.pause(2)
-#               plt.close()
-                plotSets(quantizedSets)
-        count = count + 1
-        error = helpers.error(means,newmeans)
-        means = newmeans
-    return means, quantizedSets
 
 def doKMeans3(points,means,pausebuffer):
     n = len(points)
@@ -76,13 +14,39 @@ def doKMeans3(points,means,pausebuffer):
     while error > accuracy:
         quantizedSets = setStuff.setsFromMeans3(means,points,numSets)
         newmeans = setStuff.meansFromSets3(quantizedSets,length,means)
-        plotSets(quantizedSets,pausebuffer)
+        plotSets(quantizedSets,newmeans,pausebuffer)
         count = count + 1
-        error = helpers.error(means,newmeans)
+        error = design.error(means,newmeans)
         means = newmeans
     return means, quantizedSets
 
-def plotSets(quantizedSets,pausebuffer):
+def plotSets12(quantizedSets,means,length,pausebuffer):
+    base = (0.31,0.53,0.87)
+    colour = (0.0,0.0,0.0)
+    for cluster in quantizedSets:
+        colour = helpers.add(colour,base)
+        colour = helpers.mod(1,colour)
+        pointsX = [x[0] for x in cluster.keys()]
+        if length == 2:
+            pointsY = [y[0] for y in cluster.keys()]
+        elif length == 1:
+            pointsY = [1 for y in cluster.keys()]
+        plt.plot(pointsX,pointsY,c=colour,marker='+')
+    if length == 2:
+        pointsX = [x[0] for x in means]
+        pointsY = [y[1] for y in means]
+    elif length == 1:
+        pointsX = means
+        pointsY = [1 for y in means]
+    plt.plot(pointsX,pointsY,c='r',marker='o')
+    if pausebuffer <= 0:
+        plt.show()
+    else:
+        plt.show(block=False)
+        plt.pause(pausebuffer)
+        plt.close()
+
+def plotSets(quantizedSets,means,pausebuffer):
     count = 1
     base = (0.31,0.53,0.87)
     colour = (0.0,0.0,0.0)
@@ -96,10 +60,16 @@ def plotSets(quantizedSets,pausebuffer):
         pointsZ = [z[2] for z in cluster.keys()]
         ax.scatter(pointsX,pointsY,pointsZ,c=colour,marker='+')
         count = count + 1
+    colour = helpers.add(colour,base)
+    colour = helpers.mod(1,colour)
+    pointsX = [x[0] for x in means]
+    pointsY = [y[1] for y in means]
+    pointsZ = [z[2] for z in means]
+    ax.scatter(pointsX,pointsY,pointsZ,c='r',marker='o')
     ax.invert_yaxis()
     if pausebuffer <= 0:
         plt.show()
-    else:
+    elif pausebuffer > 0:
         plt.show(block=False)
         plt.pause(pausebuffer)
         plt.close()
@@ -122,17 +92,21 @@ def extendList(points,n):
         points[vect] = group
 
 def increaseN(n,mostRandom,numSets):
-    gen.randomInit(mostRandom)
+    gen.randomInit(mostRandom,numSets)
     points = {} 
     means = gen.meanInit(numSets)
-    count = int(sanitizeInput("Input the number of iterations here:"))
-    pausebuffer = float(sanitizeInput("Input the pause buffer here:"))
+    count = int(allio.sanitizeInput("Input the number of iterations here:"))
+    pausebuffer = float(allio.sanitizeInput("Input the pause buffer here:"))
     for i in range(count):
         print "Iteration: ", i+1
         extendList(points,n)
         means, sets = doKMeans3(points,means,pausebuffer)    
     if not mostRandom:
         checkErrors(sets)
+    print "\nThe average error is: ", design.partitionError(means,sets)/n/count
+    write = allio.sanitizeInput("Export the data used? [y/n]")
+    if write == "y":
+        allio.exportData(points.keys())
 
 ##############################################################
 ## Does the Lloyd-Max algorithm on a 1-D set (that is 
@@ -148,14 +122,14 @@ def increaseN(n,mostRandom,numSets):
 
 def main(numSets,accuracy,flag,length=3):
     if flag == 2:
-        n = int(sanitizeInput("Input the block size here:")) 
-        mostRandom = int(sanitizeInput("Print 1 for purely random, 0 for predefined clusters"))
+        n = int(allio.sanitizeInput("Input the block size here:")) 
+        mostRandom = int(allio.sanitizeInput("Print 1 for purely random, 0 for predefined clusters"))
         increaseN(n,mostRandom,numSets)
         return
     elif flag == 1:
-        n = int(sanitizeInput("Input the sample size here:") )
-        low = float(sanitizeInput("Input the range minimum here:"))
-        high = float(sanitizeInput("Input the range maximum here:"))
+        n = int(allio.sanitizeInput("Input the sample size here:") )
+        low = float(allio.sanitizeInput("Input the range minimum here:"))
+        high = float(allio.sanitizeInput("Input the range maximum here:"))
         points = []
         theRange = high - low
         spacing = float(theRange)/numSets
@@ -178,9 +152,9 @@ def main(numSets,accuracy,flag,length=3):
                 j = j + 1
             points.append(thePoint)
     else:
-        testnum = sanitizeInput("Input the test number here:")
+        testnum = allio.sanitizeInput("Input the test number here:")
         filepath = "../Testing/test"+testnum+".csv"
-        points = fileio.readFile(filepath)
+        points = allio.readFile(filepath)
 #       low = helpers.theMin(points)
 #       high = helpers.theMax(points)
 #       spacing = ()
@@ -202,9 +176,11 @@ def main(numSets,accuracy,flag,length=3):
 #       print thePoint, increment
         for i in range(numSets):
             means.append(helpers.add(thePoint,helpers.mult(float(i+0.5)/numSets,increment)))
+        means = gen.meanInit(numSets)
 
 #   print means
-    doKMeans(points,means)
+    pausebuffer = float(allio.sanitizeInput("Input the pause buffer here:"))
+    means, sets = doKMeans3(points,means,pausebuffer)
 
 ##############################################################
 ## Command line things. When you run the thing from the 
@@ -221,12 +197,12 @@ def main(numSets,accuracy,flag,length=3):
 ##            numSets (int) - the number of kMeans
 ##############################################################
 if __name__ == "__main__":
-    import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, fileio, randomGeneration as gen, helps
+    import sys, random as rand, matplotlib.pyplot as plt, helpers,setStuff, design, allio, randomGeneration as gen, helps
     from mpl_toolkits.mplot3d import Axes3D
     helps.helpStr()
     args = sys.argv[1:]
     length = 3#int(args[3])
-    numSets = int(sanitizeInput("Input the desired number of clusters:"))
-    accuracy = float(sanitizeInput("Input the desired percent accuracy:"))/100
-    flag = int(sanitizeInput("Input the flag corresponding to the desired test:"))
+    numSets = int(allio.sanitizeInput("Input the desired number of clusters:"))
+    accuracy = float(allio.sanitizeInput("Input the desired percent accuracy:"))/100
+    flag = int(allio.sanitizeInput("Input the flag corresponding to the desired test:"))
     main(numSets,accuracy,flag,length)
