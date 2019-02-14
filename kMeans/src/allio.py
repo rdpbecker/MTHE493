@@ -1,14 +1,14 @@
-import csv,random as rand
+import csv,random as rand, sys, os
 
 def readFile(filepath):
-    points = []
+    points = {} 
     with open(filepath, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
             current = ()
             for thing in row:
                 current = current + (float(thing),)
-            points.append(current)
+            points[current] = 1
     return points
 
 def writeFile(filepath,length,n):
@@ -28,6 +28,28 @@ def writeFile(filepath,length,n):
         for point in points:
             csvwriter.writerow(point)
     return points
+
+def exportData(points):
+    testnum = sanitizeInput("Enter the test number you'd like to save as")
+    filepath = "../Testing/test"+testnum+".csv"
+    while os.path.exists(filepath):
+        testnum  = sanitizeInput("That test number is taken. Try another one")
+        filepath = "../Testing/test"+testnum+".csv"
+    with open(filepath,'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        for point in points:
+            string = ""
+            for thing in point:
+                string = string + str(thing) + ","
+            string = string[:-1]
+            csvwriter.writerow(point)
+    print "Export successful"
+
+def sanitizeInput(header):
+    print header
+    line = sys.stdin.readline()
+    print ""
+    return line[:-1]
 
 if __name__ == "__main__":
     import sys
