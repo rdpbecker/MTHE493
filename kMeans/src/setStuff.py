@@ -1,4 +1,4 @@
-import helpers 
+import helpers,design
 
 ##############################################################
 ## Given a set of means and a set of points, finds the set of 
@@ -25,7 +25,7 @@ def setsFromMeans3(means,points,n):
     for i in range(n):
         sets.append({})
     for point in points.keys():
-        sets[helpers.closest(means,point,n)][point] = points[point]
+        sets[design.closest(means,point,n)][point] = points[point]
     return sets
 
 ##############################################################

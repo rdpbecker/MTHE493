@@ -6,7 +6,7 @@ def doKMeans3(points,means,pausebuffer):
     numSets = len(means)
     # Initialize the counter and plotting variables
     count = 0
-    
+ #  
     error = 2*accuracy
 
     # Do the Lloyd-Max algorithm 10 times, printing and
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     from mpl_toolkits.mplot3d import Axes3D
     helps.helpStr()
     args = sys.argv[1:]
-    length = int(allio.sanitizeInput("Input the dimension of the points you'd like to generate":))
+    length = int(allio.sanitizeInput("Input the dimension of the points you'd like to generate:"))
     numSets = int(allio.sanitizeInput("Input the desired number of clusters:"))
     accuracy = float(allio.sanitizeInput("Input the desired percent accuracy:"))/100
     flag = int(allio.sanitizeInput("Input the flag corresponding to the desired test:"))
