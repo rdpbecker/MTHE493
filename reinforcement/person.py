@@ -11,13 +11,22 @@ def generateRandList(num):
     random.shuffle(aList)
     return aList
 
+def findMaxIndex(aList,n):
+    ind = 0
+    for i in range(1,n):
+        if aList[i] > aList[ind]:
+            ind = i
+    return ind
+
 class Person:
     probs = []
     n = 0
+    maxIndex = -1
 
     def __init__(self,num):
         self.probs = generateRandList(num)
         self.n = num
+        self.maxIndex = findMaxIndex(self.probs,num)
 
     def printProbs(self):
         for i in range(self.n):
@@ -29,3 +38,6 @@ class Person:
             return 1
         else:
             return 0
+
+    def getMaxIndex(self):
+        return self.maxIndex
