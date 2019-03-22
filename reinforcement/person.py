@@ -18,9 +18,11 @@ def findMaxIndex(aList,n):
             ind = i
     return ind
 
-def fillUniformList(aList,n,num):
+def createUniformList(n,num):
+    aList = []
     for i in range(n):
         aList.append(num)
+    return aList
 
 def pickWeighted(aList):
     theSum = 0
@@ -41,8 +43,8 @@ class Person:
 
     def __init__(self,num):
         self.probsActual = tuple(generateRandList(num))
-        fillUniformList(self.probsEmpirical,num,1/float(num))
-        fillUniformList(self.countEmpirical,num,0)
+        self.probsEmpirical = createUniformList(num,1/float(num))
+        self.countEmpirical = createUniformList(num,0)
         self.n = num
         self.maxIndexActual = findMaxIndex(self.probsActual,num)
         
@@ -93,3 +95,10 @@ class Person:
 
     def getCounts(self):
         return self.countEmpirical
+        
+    def printPerson(self):
+        print self.probsActual
+        print self.probsEmpirical
+        print self.countEmpirical
+        print self.totalSearches
+        print ""
