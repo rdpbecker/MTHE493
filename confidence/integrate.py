@@ -26,7 +26,18 @@ def findMaxIndex(point):
         return -1
     return maxIndex
 
-def findProbs(center,radius):
+def simplex():
+    aList = []
+    for i in range(100):
+        aList.append((i/float(100),1-i/float(100),0))
+        aList.append((i/float(100),0,1-i/float(100)))
+        aList.append((0,i/float(100),1-i/float(100)))
+        aList.append((i/float(600)+1/float(3),i/float(600)+1/float(3),-1*i/float(300)+1/float(3)))
+        aList.append((-1*i/float(300)+1/float(3),i/float(600)+1/float(3),i/float(600)+1/float(3)))
+        aList.append((i/float(600)+1/float(3),-1*i/float(300)+1/float(3),i/float(600)+1/float(3)))
+    return aList
+
+def findProbs(center,radius,flag=0):
     ball = rand.generateBall(1000,len(center),center,radius)
     n = len(center)
     counts = initCounts(n)
@@ -46,7 +57,9 @@ def findProbs(center,radius):
     probs = []
     for i in range(n):
         probs.append(counts[i]/total)
-    plotting.plotListsWithCenter(lists,center)
+    if flag:
+        lists.insert(0,simplex())
+        plotting.plotListsWithCenter(lists,center)
     return probs
 
 #print findProbs((0.1,0.2,0.7),0.6)

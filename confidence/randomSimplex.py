@@ -1,19 +1,22 @@
-import random, matplotlib.pyplot as plt, helpers, plotting
+import random, matplotlib.pyplot as plt, plotting, sys
 from mpl_toolkits.mplot3d import Axes3D
+sys.path.append("../")
+from confidence import helpers
 
 def pdf(num,radius):
     return num**0.5*radius 
 
 def simplexPoint(n,radius):
-    aList = []
-    theSum = 0
+    aList = [0]
+    newList = []
     for i in range(n-1):
-        num = random.uniform(0,radius-theSum)
+        num = random.uniform(0,radius)
         aList.append(num)
-        theSum = theSum + num
-    aList.append(radius-theSum)
-    random.shuffle(aList)
-    return aList
+    aList.append(radius)
+    aList.sort()
+    for i in range(n):
+        newList.append(aList[i+1]-aList[i])
+    return newList
 
 def shuffleSum(point,positives,negatives):
     theSum = sum(point)
