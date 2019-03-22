@@ -8,4 +8,4 @@ for i in range(2,5):
     while count <= 10**i:
         person.randomSearch()
         count = count + 1
-    print inte.findProbs(person.getProbsEmpirical(),person.confidence())
+    print inte.findProbs(person.getProbsEmpirical(),person.confidence(),1)
