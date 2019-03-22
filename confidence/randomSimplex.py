@@ -60,7 +60,7 @@ def generatePoints(num,n,radius):
     negatives = []
     for i in range(num):
         points.append(simplexPoint(n,pdf(random.random(),radius)))
-    plotting.plotPoints(points)
+#   plotting.plotPoints(points)
     removed = 0
     for i in range(num):
         positives, negatives = chooseNegatives(points[i-removed])
@@ -68,7 +68,7 @@ def generatePoints(num,n,radius):
         if error:
             points.pop(i-removed)
             removed = removed + 1
-    plotting.plotPoints(points)
+#   plotting.plotPoints(points)
     return points
 
 def chooseNegatives(point):
@@ -90,7 +90,7 @@ def generateBall(num,n,center,radius):
     ball = []
     for i in range(len(points)):
         ball.append(helpers.add(center,points[i]))
-    plotting.plotPointsWithCenter(ball,center)
+#   plotting.plotPointsWithCenter(ball,center)
     return ball
 
 if __name__ == "__main__":

@@ -31,12 +31,12 @@ def findProbs(center,radius):
     n = len(center)
     counts = initCounts(n)
     lists = createEmptyLists(n+1)
-    print lists
+#   print lists
     for i in range(len(ball)):
         index = findMaxIndex(ball[i])
-        print "Point: ", ball[i]
-        print "Index: ", index
-        print ""
+#       print "Point: ", ball[i]
+#       print "Index: ", index
+#       print ""
         counts[index] = counts[index] + 1
         lists[index+1].append(ball[i])
     total = 0
@@ -46,7 +46,7 @@ def findProbs(center,radius):
     probs = []
     for i in range(n):
         probs.append(counts[i]/total)
-    plotting.plotLists(lists)
+    plotting.plotListsWithCenter(lists,center)
     return probs
 
-print findProbs((0.1,0.2,0.7),0.6)
+#print findProbs((0.1,0.2,0.7),0.6)
