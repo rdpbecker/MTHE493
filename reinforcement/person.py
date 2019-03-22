@@ -18,26 +18,78 @@ def findMaxIndex(aList,n):
             ind = i
     return ind
 
+def fillUniformList(aList,n,num):
+    for i in range(n):
+        aList.append(num)
+
+def pickWeighted(aList):
+    theSum = 0
+    randNum = random.random()
+    for i in range(len(aList)):
+        if randNum >= theSum and randNum <= theSum + aList[i]:
+            return i
+        theSum = theSum + aList[i]
+
 class Person:
-    probs = []
+    probsActual = ()
+    probsEmpirical = []
+    countEmpirical = []
+    totalSearches = 0
     n = 0
-    maxIndex = -1
+    maxIndexActual = -1
+    maxIndexEmpirical = 0
 
     def __init__(self,num):
-        self.probs = generateRandList(num)
+        self.probsActual = tuple(generateRandList(num))
+        fillUniformList(self.probsEmpirical,num,1/float(num))
+        fillUniformList(self.countEmpirical,num,0)
         self.n = num
-        self.maxIndex = findMaxIndex(self.probs,num)
+        self.maxIndexActual = findMaxIndex(self.probsActual,num)
+        
 
     def printProbs(self):
         for i in range(self.n):
-            print "Probability ", i , ": ", self.probs[i]
+            print "Probability ", i , ": ", self.probsActual[i]
 
     def clickAd(self,ad):
         num = random.random()
-        if num < self.probs[ad]:
+        if num < self.probsActual[ad]:
             return 1
         else:
             return 0
 
-    def getMaxIndex(self):
-        return self.maxIndex
+    def randomSearch(self):
+        searched = pickWeighted(self.probsActual)
+        self.updateProbs(searched)
+
+    def updateProbs(self,searched):
+        self.countEmpirical[searched] = self.countEmpirical[searched] + 1
+        self.totalSearches = self.totalSearches + 1
+        for i in range(self.n):
+            self.probsEmpirical[i] = self.countEmpirical[i]/float(self.totalSearches)
+        if self.countEmpirical[searched] > self.countEmpirical[self.maxIndexEmpirical]:
+            self.maxIndexEmpirical = searched
+    
+    def confidence(self):
+        return 1/float(self.totalSearches)**0.1
+    
+    def getMaxIndexActual(self):
+        return self.maxIndexActual
+
+    def getMaxIndexEmpirical(self):
+        return self.maxIndexEmpirical
+
+    def getProbsActual(self):
+        return self.probsActual
+
+    def getProbsEmpirical(self):
+        return self.probsEmpirical
+
+    def getLength(self):
+        return self.n
+
+    def getSearches(self):
+        return self.totalSearches
+
+    def getCounts(self):
+        return self.countEmpirical
