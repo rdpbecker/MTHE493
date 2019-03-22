@@ -14,11 +14,12 @@ def doKMeans3(points,means,pausebuffer):
     while error > accuracy:
         quantizedSets = setStuff.setsFromMeans3(means,points,numSets)
         newmeans = setStuff.meansFromSets3(quantizedSets,length,means)
-        plotSets(quantizedSets,newmeans,pausebuffer)
+#       plotSets(quantizedSets,newmeans,pausebuffer)
         count = count + 1
         error = design.error(means,newmeans)
         print "Current error: ", design.partitionError(newmeans,quantizedSets)/n
         means = newmeans
+    plotSets(quantizedSets,means,pausebuffer)
     return means, quantizedSets
 
 def plotSets12(quantizedSets,means,length,pausebuffer):
