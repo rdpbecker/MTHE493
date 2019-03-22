@@ -71,18 +71,19 @@ def plotListsWithCenter(lists,center):
     base = (0.31,0.53,0.97)
     colour = base
 #   print len(lists)
+    colours = ['r','b','y','g','m','k']
     points = []
     for i in range(len(lists)):
         points.extend(lists[i])
         pointsX = [x[0] for x in lists[i]]
         pointsY = [y[1] for y in lists[i]]
         pointsZ = [z[2] for z in lists[i]]
-        ax.scatter(pointsX,pointsY,pointsZ,c=colour,marker='o')
-        colour = helpers.mod(1,helpers.add(colour,base))
+        ax.scatter(pointsX,pointsY,pointsZ,c=colours[i],marker='o')
+#       colour = helpers.mod(1,helpers.add(colour,base))
     ax.set_xlim([min(x[0] for x in points),max(x[0] for x in points)])
     ax.set_ylim([min(x[1] for x in points),max(x[1] for x in points)])
     ax.set_zlim([min(x[2] for x in points),max(x[2] for x in points)])
-    ax.scatter([center[0]],[center[1]],[center[2]],c='r',marker='o')
+    ax.scatter([center[0]],[center[1]],[center[2]],c=colours[len(lists)],marker='o')
     ax.invert_yaxis()
     plt.show()
 
