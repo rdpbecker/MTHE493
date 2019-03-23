@@ -42,7 +42,7 @@ def findProbs(center,radius,flag=0):
     n = len(center)
     counts = initCounts(n)
     lists = createEmptyLists(n+1)
-#   print lists
+#   print n,lists
     for i in range(len(ball)):
         index = findMaxIndex(ball[i])
 #       print "Point: ", ball[i]
@@ -51,6 +51,7 @@ def findProbs(center,radius,flag=0):
         counts[index] = counts[index] + 1
         lists[index+1].append(ball[i])
     total = 0
+#   print [len(x) for x in lists]
     for i in range(n):
         total = total + counts[i]
     total = float(total)
