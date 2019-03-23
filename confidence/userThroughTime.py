@@ -1,4 +1,6 @@
-import integrate as inte, person as p
+import integrate as inte, sys
+sys.path.append("../")
+from People import person as p
 
 person = p.Person(3)
 person.printProbs()
