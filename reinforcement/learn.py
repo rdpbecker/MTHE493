@@ -1,4 +1,6 @@
-import random, person as p
+import random, sys
+sys.path.append("../")
+from confidence import person as p
 
 def printDict(aDict,header,elemHeader):
     print header
