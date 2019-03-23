@@ -1,5 +1,7 @@
-import person as p, random, integrate as inte 
+import random, sys#, person as p, integrate as inte 
+sys.path.append("../")
 from timeit import default_timer as timer
+from confidence import person as p, integrate as inte
 
 def giveRandom(people,iters,adsList):
     successes = 0
@@ -12,7 +14,6 @@ def giveTargetted(people,iters):
     successes = 0
     intTime = 0
     adTime = 0
-    start = timer()
     for i in range(len(people)):
 #       start = timer()
         probs = inte.findProbs(people[i].getProbsEmpirical(),people[i].confidence(),0)
@@ -38,8 +39,8 @@ def oneIter(n,num,searches,adsGiven):
         people.append(p.Person(n))
         for j in range(searches):
             people[i].randomSearch()
-#       print "Generated person ", i
-#       people[i].printPerson()
+        print "Generated person ", i
+        people[i].printPerson()
     randPct = giveRandom(people,adsGiven,adsList)
     targetPct = giveTargetted(people,adsGiven)
     print "With random ads: ", randPct
