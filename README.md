@@ -10,8 +10,14 @@ implemented in both Python 2.7 and Python 3.6. Further
 descriptions of the directory specifics are found in the 
 readme in that directory
 
-**newStuff**: contains a few classes which could be used to 
-describe the people in the system being examined. The method
-of simply tagging the people according to which cluster they
-should be in was implemented in the kMeans directory, but 
-these files were kept in case they come in useful at some point
+**confidence**: contains the code to implement determine the 
+proportions of a ball with a given radius and center which 
+lie within various regions of the simplex
+
+**reinforcement**: contains some scripts to check the results
+of our work by making sure our targetted advertising method
+is actually better than just randomly selecting ads to give
+to people
+
+**People**: contains the definitions of two different Person 
+objects

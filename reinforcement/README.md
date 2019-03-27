@@ -8,7 +8,7 @@ people in two different ways:
   *Random method*: At each time step, give the person a random
 (uniformly distributed) ad from our ad bank. 
 
-  *Targetter method*: Generate some random (according to the 
+  *Targetted method*: Generate some random (according to the 
 person's internal distribution) searches for each person, then
 give them the ad which has the greatest probability of being 
 clicked.
