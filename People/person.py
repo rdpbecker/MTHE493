@@ -47,11 +47,6 @@ class Person:
         self.countEmpirical = createUniformList(num,0)
         self.n = num
         self.maxIndexActual = findMaxIndex(self.probsActual,num)
-        
-
-    def printProbs(self):
-        for i in range(self.n):
-            print "Probability ", i , ": ", self.probsActual[i]
 
     def clickAd(self,ad):
         num = random.random()
@@ -96,6 +91,10 @@ class Person:
     def getCounts(self):
         return self.countEmpirical
         
+    def printProbs(self):
+        for i in range(self.n):
+            print "Probability ", i , ": ", self.probsActual[i]
+
     def printPerson(self):
         print self.probsActual
         print self.probsEmpirical
