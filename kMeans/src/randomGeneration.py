@@ -2,11 +2,29 @@ import random as rand, sys, allio
 mostRandom = 1
 ps = []
 
+##############################################################
+## Initialize the module
+##
+## Parameters: randomness - a flag described in the helpstring
+##             clusters - the number of clusters which will be 
+##                        used
+##
+## Returns: None
+##############################################################
+
 def randomInit(randomness,clusters):
     global mostRandom
     mostRandom = randomness
     if not randomness:
         choosePs(clusters)
+
+##############################################################
+## Randomly initialize means for the clustering algorithm
+##
+## Parameters: num - the number of required clusters
+##
+## Returns: the means in a list
+##############################################################
 
 def meanInit(num):
     if mostRandom:
@@ -16,6 +34,15 @@ def meanInit(num):
     else:
         means = [group1(),group2(),group3(),group4(),group5()]
     return means
+
+##############################################################
+## Choose the probability distribution for the pre-clustered
+## data
+##
+## Parameters: num - the number of clusters
+##
+## Returns: None
+##############################################################
 
 def choosePs(num):
     theSum = 0
@@ -28,11 +55,24 @@ def choosePs(num):
     ps.append(1)
     print ps
 
-def checkRandomness():
-    print mostRandom
+##############################################################
+## Chooses a random integer from 1 to num
+##
+## Parameters: num - the upper bound on the range to choose 
+##                   from
+## 
+## Returns: a random integer between 1 and num
+##############################################################
 
 def randomInteger(num):
     return int(rand.uniform(0,num)) + 1
+
+##############################################################
+## Randomly chooses a number according to the global 
+## distribution
+##
+## Returns: a randomly selected tag
+##############################################################
 
 def randomSelector():
     num = rand.uniform(0,1)
@@ -41,19 +81,29 @@ def randomSelector():
             return i+1
     return len(ps)-1
 
-def rearrange(arr):
-    newarr = [arr.pop(randomInteger(3)-1)]
-    newarr.append(arr.pop(randomInteger(2)-1))
-    newarr.append(arr.pop(0))
-    return newarr
+##############################################################
+## Randomly generates a vector on the 3-d simplex
+##
+## Returns: the 3-d vector as a tuple
+##############################################################
 
 def randomFunc():
-    coord1 = rand.uniform(0,1)
-    coord2 = rand.uniform(0,1-coord1)
-    coord3 = 1-coord1-coord2
-    arr = [coord1,coord2,coord3]
-    rand.shuffle(arr)
-    return tuple(arr)
+    aList = [0]
+    newList = []
+    for i in range(2):
+        num = random.uniform(0,1)
+        aList.append(num)
+    aList.append(1)
+    aList.sort()
+    for i in range(n):
+        newList.append(aList[i+1]-aList[i])
+    return tuple(newList)
+
+##############################################################
+## Randomly generate people in specific groups
+##
+## Returns: a randomly generated 3-component vector
+##############################################################
 
 def group1():
     return (rand.gauss(-10,5),rand.gauss(30,4),rand.gauss(0,5))
@@ -70,7 +120,15 @@ def group4():
 def group5():
     return (rand.gauss(-30,5),rand.gauss(-10,4),rand.gauss(-5,5))
 
-def generatePerson(num):
+##############################################################
+## Randomly chooses a group from which to generate a point and
+## then generates a point in that group
+##
+## Returns: a randomly generated 3-d vector, along with a tag
+##          for the group it was generated from
+##############################################################
+
+def generatePerson():
     if mostRandom:
         return randomFunc(), 1
     group = randomSelector()
