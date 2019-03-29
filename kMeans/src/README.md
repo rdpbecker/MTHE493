@@ -1,7 +1,8 @@
 # File Contents
 
-**fileio.py**: contains the functions called when a predetermined
-data set should be used when the program is run
+**allio.py**: contains the functions called when a predetermined
+data set should be used when the program is run. Also contains the 
+function to sanitize user inputs
 
 **helpers.py**: contains the basic helper functions, such as 
 operations on points
