@@ -1,7 +1,7 @@
 import random, sys#, person as p, integrate as inte 
 sys.path.append("../")
 from timeit import default_timer as timer
-from confidence import person as p, integrate as inte
+from People/2.7 import person as p, integrate as inte
 
 def giveRandom(people,iters,adsList):
     successes = 0
