@@ -1,9 +1,20 @@
 import random, sys#, person as p, integrate as inte 
-sys.path.append("../")
-sys.path.append("../People")
+sys.path.append("../../People")
+sys.path.append("../../confidence")
 from timeit import default_timer as timer
-from two import person as p 
-from confidence import integrate as inte
+from two import person as p
+from twoc import integrate as inte
+
+##############################################################
+## Gives a group of people a number of ads from a list, 
+## chosen randomly
+## 
+## Parameters: people - the group of people, as a list
+##             iters - the number of ads to give each person
+##             adsList - the list of ads to give
+##
+## Returns: the percent of ads which were clicked
+##############################################################
 
 def giveRandom(people,iters,adsList):
     successes = 0
@@ -11,6 +22,16 @@ def giveRandom(people,iters,adsList):
         for j in range(len(people)):
             successes = successes + people[j].clickAd(random.choice(adsList))
     return float(successes)/len(people)/iters            
+
+##############################################################
+## Gives a group of people a number of ads from a list, 
+## targetted towards the people 
+## 
+## Parameters: people - the group of people, as a list
+##             iters - the number of ads to give each person
+##
+## Returns: the percent of ads which were clicked
+##############################################################
 
 def giveTargetted(people,iters):
     successes = 0
@@ -34,6 +55,26 @@ def giveTargetted(people,iters):
 #       print ""
     return float(successes)/len(people)/iters
 
+##############################################################
+## Randomly generate a given number of people to be presented
+## a certain number of ads, then generate search histories for
+## each of them and determine what proportion of ads are 
+## clicked by each person if they are given
+##
+## 1. Randomly selected ads
+## 2. Targetted ads
+##
+## Parameters: n - the number of ads in the pool
+##             num - the number of people to generate
+##             searches - the number of searches to generate
+##                        for each person
+##             adsGiven - the number of ads to present each 
+##                        person
+##
+## Returns: the percent of ads clicked by random selection and
+##          by targetted selection
+##############################################################
+
 def oneIter(n,num,searches,adsGiven):
     adsList = range(n)
     people = []
@@ -49,6 +90,18 @@ def oneIter(n,num,searches,adsGiven):
     print "With targetted ads: ", targetPct 
     return randPct, targetPct
 
+##############################################################
+## Generate some groups of people and present ads to them to
+## determine the approximate improvement of giving targetted
+## ads over random ads
+##
+## Parameters: dim, people, searches, adsGiven - see oneIter()
+##             peopleSets - the number of groups of people to 
+##                          generate
+##
+## Returns: None
+##############################################################
+
 def main(dim,people,searches,adsGiven,peopleSets):
     randSum = 0
     targetSum = 0
@@ -61,14 +114,9 @@ def main(dim,people,searches,adsGiven,peopleSets):
     print "With random ads: ", randSum/peopleSets
     print "With targetted ads: ", targetSum/peopleSets
 
-def testUpdating():
-    person = p.Person(3)
-    person2 = p.Person(3)
-    for i in range(5):
-        person.randomSearch()
-        person2.randomSearch()
-    person.printPerson()
-    person2.printPerson()
+##############################################################
+## Actually run the script
+##############################################################
 
 if __name__ == "__main__":
     import sys
