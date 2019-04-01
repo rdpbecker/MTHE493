@@ -1,7 +1,5 @@
-import random, matplotlib.pyplot as plt, plotting, sys
+import random, matplotlib.pyplot as plt, plotting, sys, helpers
 from mpl_toolkits.mplot3d import Axes3D
-sys.path.append("../")
-from confidence import helpers
 
 def pdf(num,radius):
     return num**0.5*radius 
