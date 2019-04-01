@@ -1,6 +1,6 @@
 import integrate as inte, sys
-sys.path.append("../../")
-from People import person as p
+sys.path.append("../../People")
+from two import person as p
 
 ##############################################################
 ## Generate a person and show the change in their confidence 
