@@ -1,6 +1,11 @@
 import integrate as inte, sys
 sys.path.append("../../People")
-from three import person as p
+from two import person as p
+
+##############################################################
+## Generate a person and show the change in their confidence 
+## range through time
+##############################################################
 
 person = p.Person(3)
 person.printProbs()
