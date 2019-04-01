@@ -1,8 +1,22 @@
 import random, matplotlib.pyplot as plt, plotting, sys, helpers
 from mpl_toolkits.mplot3d import Axes3D
 
+##############################################################
+## Defines a pdf according to a random number and the radius
+## of the ball to be generated
+##############################################################
+
 def pdf(num,radius):
     return num**0.5*radius 
+
+##############################################################
+## Generates a single on the n-simplex with \sum_i=1^n =radius
+##
+## Parameters: n - the dimension of the point generated
+##             radius - the radius of the point on the simplex
+##
+## Returns: a random (uniform) simplex point
+##############################################################
 
 def simplexPoint(n,radius):
     aList = [0]
@@ -15,6 +29,19 @@ def simplexPoint(n,radius):
     for i in range(n):
         newList.append(aList[i+1]-aList[i])
     return newList
+
+##############################################################
+## Once we have a simplex point, shift it so that 
+## \sum_i=1^n =0 with an unchanged 1-norm
+##
+## Parameters: point - the point to be shifted
+##             positives - a list of the positive components 
+##                         of point
+##             negatives - a list of the negative components
+##                         of point
+##
+## Returns: -1 if there is an error, None otherwise
+##############################################################
 
 def shuffleSum(point,positives,negatives):
     theSum = sum(point)
@@ -55,6 +82,17 @@ def shuffleSum(point,positives,negatives):
 #   print "The final 1-norm is: ", sum([abs(x) for x in point])
 #   print point
 
+##############################################################
+## Generates num points in n-dimensions in a ball of radius
+## radius
+##
+## Parameters: num - the number of points to generate
+##             n - the dimension of points to generate
+##             radius - the radius of the ball to generate
+##
+## Returns: a list of points in a given radius
+##############################################################
+
 def generatePoints(num,n,radius):
     points = []
     positives = []
@@ -66,11 +104,21 @@ def generatePoints(num,n,radius):
     for i in range(num):
         positives, negatives = chooseNegatives(points[i-removed])
         error = shuffleSum(points[i-removed],positives,negatives)
-        if error:
+        if error: ## Point not generated
             points.pop(i-removed)
             removed = removed + 1
 #   plotting.plotPoints(points)
     return points
+
+##############################################################
+## Randomly choose some of the components of the simplex point
+## to be negative
+## 
+## Parameters: point - the point in question
+##
+## Returns: lists of the indexes of the positive and negative 
+## components
+##############################################################
 
 def chooseNegatives(point):
     positives = []
@@ -81,10 +129,22 @@ def chooseNegatives(point):
             negatives.append(i)
         else:
             positives.append(i)
-    if not len(positives) or not len(negatives):
+    if not len(positives) or not len(negatives): ## Shuffle won't work, so try again
         return chooseNegatives(point)
     else:
         return positives, negatives
+
+##############################################################
+## Generates a given number of points with a given number of
+## components and given radius about a specified center
+##
+## Parameters: num - the number of points to generate
+##             n - the dimesion of points to generate
+##             center - the center of the ball
+##             radius - the radius of the ball
+##         
+## Returns: a list of points in the specified ball
+##############################################################
 
 def generateBall(num,n,center,radius):
     points = generatePoints(num,n,radius)
@@ -93,6 +153,10 @@ def generateBall(num,n,center,radius):
         ball.append(helpers.add(center,points[i]))
 #   plotting.plotPointsWithCenter(ball,center)
     return ball
+
+##############################################################
+## Run as script for testing
+##############################################################
 
 if __name__ == "__main__":
     generateBall(1000,3,(0.1,0.2,0.7),0.4)
