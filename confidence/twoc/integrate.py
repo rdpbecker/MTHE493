@@ -1,10 +1,30 @@
 import randomSimplex as rand, plotting, copy
 
+##############################################################
+## Initialize a dictionary with n+1 keys, where key i 
+## corresponds to the number of points whose maximum element
+## is i, and key -1 corresponds to points which lie outside
+## the simplex
+## 
+## Parameters: n - the number of components in the probability
+##                 vectors
+##
+## Returns: a dictionary with all 0 values
+##############################################################
+
 def initCounts(n):
     counts = {}
     for i in range(-1,n):
         counts[i] = 0
     return counts
+
+##############################################################
+## Creates an list of empty lists
+## 
+## Parameters: n - the number of lists to create
+##
+## Returns: a list of (unaliased) empty lists
+##############################################################
 
 def createEmptyLists(n):
     lists = []
@@ -12,6 +32,15 @@ def createEmptyLists(n):
     for i in range(n):
         lists.append(copy.deepcopy(aList))
     return lists
+
+##############################################################
+## Finds the index of the maximum value of a list
+##
+## Parameters: point - the list to be checked
+##
+## Returns: the index of the maximum value of point. Returns
+##          -1 if there is a value outside [0,1]
+##############################################################
 
 def findMaxIndex(point):
     maxIndex = -1
@@ -26,6 +55,12 @@ def findMaxIndex(point):
         return -1
     return maxIndex
 
+##############################################################
+## Generates points to draw a 3-simplex with lines between the
+## areas with different maximal components. The list of points
+## is returned
+##############################################################
+
 def simplex():
     aList = []
     for i in range(100):
@@ -36,6 +71,18 @@ def simplex():
         aList.append((-1*i/float(300)+1/float(3),i/float(600)+1/float(3),i/float(600)+1/float(3)))
         aList.append((i/float(600)+1/float(3),-1*i/float(300)+1/float(3),i/float(600)+1/float(3)))
     return aList
+
+##############################################################
+## Finds the proportions of the ball which are in each area
+##
+## Parameters: center - the center point of the ball to be
+##                      generated
+##             radius - the radius of the ball to generate
+##             flag - 1 to plot the stuff, 0 to not
+##
+## Returns: a list with the proportions of the ball which are 
+##          in each area
+##############################################################
 
 def findProbs(center,radius,flag=0):
     ball = rand.generateBall(1000,len(center),center,radius)
