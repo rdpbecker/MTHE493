@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt, helpers
 from mpl_toolkits.mplot3d import Axes3D
 
+##############################################################
+## Plots a set of points in red
+##############################################################
+
 def plotPoints(points):
     fig = plt.figure()
     ax = fig.gca(projection = '3d')
@@ -10,6 +14,11 @@ def plotPoints(points):
     ax.scatter(pointsX,pointsY,pointsZ,c='r',marker='o')
     ax.invert_yaxis()
     plt.show()
+
+##############################################################
+## Plots a set of points in red along with a single extra 
+## point in green
+##############################################################
 
 def plotPointsWithCenter(points,center):
     fig = plt.figure()
@@ -22,6 +31,10 @@ def plotPointsWithCenter(points,center):
     ax.invert_yaxis()
     plt.show()
 
+##############################################################
+## Plots a set of points with points in each actant shown in
+## a different colour
+##############################################################
 
 def plotPointsWithNegs(points):
     lists = [[],[],[],[],[],[],[],[]]
@@ -50,6 +63,10 @@ def plotPointsWithNegs(points):
                     lists[7].append(points[i])
     plotLists(lists)
 
+##############################################################
+## Plots a list of lists, with each list in a different colour
+##############################################################
+
 def plotLists(lists):
     fig = plt.figure()
     ax = fig.gca(projection = '3d')
@@ -64,6 +81,12 @@ def plotLists(lists):
         colour = helpers.mod(1,helpers.add(colour,base))
     ax.invert_yaxis()
     plt.show()
+
+##############################################################
+## Plots a list of lists, with each list in a different colour
+## along with a single point in a different colour from any
+## list
+##############################################################
 
 def plotListsWithCenter(lists,center):
     fig = plt.figure()
