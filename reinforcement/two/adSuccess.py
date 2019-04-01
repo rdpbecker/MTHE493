@@ -1,9 +1,9 @@
 import random, sys#, person as p, integrate as inte 
-sys.path.append("../People")
-sys.path.append("../")
+sys.path.append("../../People")
+sys.path.append("../../confidence")
 from timeit import default_timer as timer
 from two import person as p
-from confidence import integrate as inte
+from twoc import integrate as inte
 
 ##############################################################
 ## Gives a group of people a number of ads from a list, 
